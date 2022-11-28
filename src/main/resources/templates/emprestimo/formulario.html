@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html
+	th:replace="~{layout :: layout (~{::title}, ~{::main}, ~{::styles}, ~{::scripts})}">
+
+<th:block th:fragment="styles">
+	<link rel="stylesheet"
+		th:href="@{/plugins/select2/css/select2.min.css}">
+	<link rel="stylesheet"
+		th:href="@{/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css}">
+</th:block>
+
+<head>
+<title>[[${emprestimo.id == null ? 'Novo' : 'Editar'}]]
+	Emprestimo</title>
+</head>
+
+<body>
+	<main>
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="card">
+					<!-- /.card-header -->
+					<!-- form start -->
+					<form method="POST" th:object="${emprestimo}">
+						<input type="hidden" th:name="${_csrf.parameterName}"
+							th:value="${_csrf.token}">
+						<div class="card-body">
+							<input type="hidden" th:field="*{id}">
+
+
+							<div class="row">
+								<div class="col-md-6 col-sm-12">
+									<div class="form-group">
+										<label>Cliente</label> <select th:field="*{cliente}"
+											class="form-control select2bs4" style="width: 100%;">
+											<option th:each="cliente : ${clientes}"
+												th:text="${cliente.nome}" th:value="${cliente.id}"></option>
+										</select>
+									</div>
+								</div>
+
+								<div class="col-md-6 col-sm-12">
+									<div class="form-group">
+										<label>Livro</label> <select th:field="*{livro}"
+											class="form-control select2bs4" style="width: 100%;">
+											<option th:each="livro : ${livros}" th:text="${livro.nome}"
+												th:value="${livro.id}"></option>
+										</select>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-6 col-sm-12">
+									<div class="form-group">
+										<label for="dataInicio">data de retirada</label> <input
+											type="date" class="form-control" th:field="*{dataInicio}">
+									</div>
+								</div>
+								<div class="col-md-6 col-sm-12">
+									<div class="form-group">
+										<label for="dataFim">data de entrega</label> <input
+											type="date" class="form-control" th:field="*{dataFim}">
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="card-footer">
+							<button type="submit" class="btn btn-primary">Salvar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<th:block th:fragment="scripts">
+		<script th:src="@{/plugins/select2/js/select2.full.min.js}"></script>
+		<script th:src="@{/plugins/jquery-mask/jquery.mask.min.js}"></script>
+		<script>
+			$('.select2bs4').select2({
+				theme : 'bootstrap4'
+			})
+
+			$('#orcamento').mask('#.##0,00', {
+				reverse : true
+			});
+			$('#gastos').mask('#.##0,00', {
+				reverse : true
+			});
+		</script>
+	</th:block>
+</body>
+
+</html>
